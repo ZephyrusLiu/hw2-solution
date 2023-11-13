@@ -8,7 +8,7 @@ To compile the code from terminal, use the following command:
 ```
 cd src
 javac ExpenseTrackerApp.java
-java ExpenseTracker
+java ExpenseTrackerApp
 ```
 
 You should be able to view the GUI of the project upon successful compilation. 
