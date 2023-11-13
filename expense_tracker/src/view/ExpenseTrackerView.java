@@ -27,6 +27,10 @@ public class ExpenseTrackerView extends JFrame {
   private JTextField amountFilterField;
   private JButton amountFilterBtn;
 
+  // Add undo button
+  private JButton undoButton;
+
+
   
 
   public ExpenseTrackerView() {
@@ -62,6 +66,9 @@ public class ExpenseTrackerView extends JFrame {
     amountFilterField = new JTextField(10);
     amountFilterBtn = new JButton("Filter by Amount");
   
+    // Add undo button
+    JLabel undoLabel = new JLabel("Undo");
+    undoButton = new JButton("Undo");
 
   
     // Layout components
@@ -75,6 +82,8 @@ public class ExpenseTrackerView extends JFrame {
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(amountFilterBtn);
     buttonPanel.add(categoryFilterBtn);
+    //Add undo button
+    buttonPanel.add(undoButton);
   
     // Add panels to frame
     add(inputPanel, BorderLayout.NORTH);
@@ -143,6 +152,11 @@ public class ExpenseTrackerView extends JFrame {
         return 0.0; // Default value (or any other appropriate value)
     }
   }
+  // Undo button function
+  public JButton getUndoButton() {
+    return undoButton;
+  }
+  
 
   public void refreshTable(List<Transaction> transactions) {
       // Clear existing rows
