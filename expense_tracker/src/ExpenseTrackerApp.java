@@ -68,6 +68,14 @@ public class ExpenseTrackerApp {
     view.toFront();
    }});
     
+   // Add undo eventlistener
+   
+    view.getUndoButton().addActionListener(e -> {
+      int[] selectedRows = view.getTransactionsTable().getSelectedRows();
+      if (selectedRows[0] >= 0) {
+        controller.undoTransaction(selectedRows);
+            }
+    });
 
   }
 }

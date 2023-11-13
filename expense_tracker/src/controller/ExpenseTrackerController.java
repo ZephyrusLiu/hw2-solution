@@ -72,4 +72,16 @@ public class ExpenseTrackerController {
       view.toFront();}
 
   }
+
+  // Add undo button function
+  public void undoTransaction(int[] selectedRows) {
+    List<Transaction> transactions = model.getTransactions();
+    if (selectedRows[0] >= 0 && selectedRows.length <= transactions.size()) {
+      for(int selectedRow : selectedRows){
+                  Transaction selectedTransaction = transactions.get(selectedRow);
+                  model.removeTransaction(selectedTransaction);
+      }
+      view.refreshTable(model.getTransactions());
+    }
+  }
 }
