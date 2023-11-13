@@ -67,7 +67,6 @@ public class ExpenseTrackerView extends JFrame {
     amountFilterBtn = new JButton("Filter by Amount");
   
     // Add undo button
-    JLabel undoLabel = new JLabel("Undo");
     undoButton = new JButton("Undo");
 
   
