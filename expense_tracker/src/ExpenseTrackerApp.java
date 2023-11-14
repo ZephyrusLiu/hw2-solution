@@ -71,10 +71,18 @@ public class ExpenseTrackerApp {
    // Add undo eventlistener
    
     view.getUndoButton().addActionListener(e -> {
+      int rowCount = view.getTransactionsTable().getRowCount();
       int[] selectedRows = view.getTransactionsTable().getSelectedRows();
-      if (selectedRows[0] >= 0) {
+
+      if(rowCount < 2){
+        JOptionPane.showMessageDialog(view, "This undo is not allowd: The transaction list is empty.");
+      }
+      else if (selectedRows.length > 0) {
         controller.undoTransaction(selectedRows);
             }
+      else{
+        JOptionPane.showMessageDialog(view, "This undo is not allowd: No transaction is sellected.");
+      }
     });
 
   }

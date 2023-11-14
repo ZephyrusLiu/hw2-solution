@@ -5,6 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.table.DefaultTableModel;
+
 import java.text.ParseException;
 
 import org.junit.Before;
@@ -113,4 +117,49 @@ public class TestExample {
         assertEquals(0.00, totalCost, 0.01);
     }
     
+    @Test
+    public void testAddTransactionInView() {
+        // Transaction is empty before test
+        assertEquals(0, view.getTransactionsTable().getRowCount()); 
+
+        // Set transaction value
+
+        // Previously thougt use method in view to set a transaction
+        // JFormattedTextField amount = new JFormattedTextField("50.0");
+        // JFormattedTextField category = new JFormattedTextField("Food");
+        // view.setAmountField(amount);
+        // view.setCategoryField(category);
+
+        // // Test if input is correct.
+        // assertEquals(50.0, view.getAmountField(), 0.01);
+        // assertEquals("Food", view.getCategoryField());
+
+        double amount = 50.0;
+	    String category = "food";
+
+        // Add transaction
+        assertTrue(controller.addTransaction(amount, category));
+
+        // Test if added
+        // First line is transaction, second line is total
+        assertEquals(2, view.getTransactionsTable().getRowCount()); 
+
+        // Test if correctly added
+        assertEquals(50.0, view.getTableModel().getValueAt(0, 1));
+        assertEquals("food", view.getTableModel().getValueAt(0, 2));
+
+        // Test if total is correct reflected
+        assertEquals(50.0, view.getTableModel().getValueAt(1, 3));
+
+    }
+
+    @Test
+    public void testUndoDisallowed() {
+        // Error message
+        String emptyMessage = "This undo is not allowd: The transaction list is empty.";
+        String notSelectMessage = "This undo is not allowd: No transaction is sellected.";
+        
+    }
+
+
 }
