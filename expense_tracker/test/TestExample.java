@@ -239,6 +239,9 @@ public class TestExample {
 
     @Test
     public void testUndoAllowed() {
+
+        JTable transactionsTable = view.getTransactionsTable();
+
         double amount1 = 20.0;
         String category1 = "food";
         double amount2 = 30.0;
@@ -248,22 +251,25 @@ public class TestExample {
         double amount4 = 45.0;
         String category4 = "bills";
 
-        controller.addTransaction(amount1, category1);
-        controller.addTransaction(amount2, category2);
-        controller.addTransaction(amount3, category3);
-        controller.addTransaction(amount4, category4);
+        assertTrue(controller.addTransaction(amount1, category1));
+        assertTrue(controller.addTransaction(amount2, category2));
+        assertTrue(controller.addTransaction(amount3, category3));
+        assertTrue(controller.addTransaction(amount4, category4));
 
         assertEquals(5, view.getTransactionsTable().getRowCount());
 
-        int[] intlist = { 2, 3 };
+        
+        transactionsTable.addRowSelectionInterval(1, 2);
+        int[] selectedRows = transactionsTable.getSelectedRows();
+
         try {
-            controller.undoTransaction(intlist);
-        } catch (Exception e) {
-            String errorMessage = e.getMessage();
+            controller.undoTransaction(selectedRows);
+        } 
+        catch (Exception e) {
         }
         assertEquals(3, view.getTransactionsTable().getRowCount());
         assertEquals(20.0, view.getTableModel().getValueAt(0, 1));
-        assertEquals("other", view.getTableModel().getValueAt(1, 2));
+        assertEquals("bills", view.getTableModel().getValueAt(1, 2));
 
     }
 
