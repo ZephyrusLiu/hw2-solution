@@ -158,8 +158,16 @@ public class TestExample {
         // Error message
         String emptyMessage = "This undo is not allowd: The transaction list is empty.";
         String notSelectMessage = "This undo is not allowd: No transaction is sellected.";
-        
-    }
+        double amount = 50.0;
+	    String category = "food";
 
+        try{
+            Transaction trans = new Transaction(amount, category);
+            model.addTransaction(trans);
+
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+        }
+    }   
 
 }
