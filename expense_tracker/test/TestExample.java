@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import controller.ExpenseTrackerController;
+import controller.UndoException;
 import model.ExpenseTrackerModel;
 import model.Transaction;
 import model.Filter.AmountFilter;
@@ -236,33 +237,38 @@ public class TestExample {
         assertEquals("Not Equal to 2.", cfTransactions.size(), 2);
     }
 
-    // @Test
-    // public void testUndoAllowed() {
-    //     double amount1 = 30.0;
-    //     String category1 = "food";
-    //     double amount2 = 30.0;
-    //     String category2 = "other";
-    //     double amount3 = 10.0;
-    //     String category3 = "food";
-    //     double amount4 = 45.0;
-    //     String category4 = "bills";
+    @Test
+    public void testUndoAllowed() {
+        double amount1 = 20.0;
+        String category1 = "food";
+        double amount2 = 30.0;
+        String category2 = "other";
+        double amount3 = 10.0;
+        String category3 = "food";
+        double amount4 = 45.0;
+        String category4 = "bills";
 
-    //     controller.addTransaction(amount1, category1);
-    //     controller.addTransaction(amount2, category2);
-    //     controller.addTransaction(amount3, category3);
-    //     controller.addTransaction(amount4, category4);
+        controller.addTransaction(amount1, category1);
+        controller.addTransaction(amount2, category2);
+        controller.addTransaction(amount3, category3);
+        controller.addTransaction(amount4, category4);
 
-    //     assertEquals(5, view.getTransactionsTable().getRowCount());
+        assertEquals(5, view.getTransactionsTable().getRowCount());
 
-    //     controller.undoTransaction(view.getTransactionsTable().getSelectedRows());
-    //     assertEquals(2, view.getTransactionsTable().getSelectedRows());
+        int[] intlist = { 2, 3 };
+        try {
+            controller.undoTransaction(intlist);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+        }
+        assertEquals(3, view.getTransactionsTable().getRowCount());
+        assertEquals(20.0, view.getTableModel().getValueAt(0, 1));
+        assertEquals("other", view.getTableModel().getValueAt(1, 2));
 
-    // }
+    }
 
-    
     @Test
     public void testUndoDisallowed() {
-
 
         // Error message
         String emptyMessage = "This undo is not allowed: The transaction list is empty.";
@@ -302,4 +308,3 @@ public class TestExample {
     }
 
 }
-
