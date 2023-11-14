@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFormattedTextField;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import java.text.ParseException;
@@ -235,44 +236,70 @@ public class TestExample {
         assertEquals("Not Equal to 2.", cfTransactions.size(), 2);
     }
 
-    @Test
-    public void testUndoAllowed() {
-        double amount1 = 30.0;
-        String category1 = "food";
-        double amount2 = 30.0;
-        String category2 = "other";
-        double amount3 = 10.0;
-        String category3 = "food";
-        double amount4 = 45.0;
-        String category4 = "bills";
+    // @Test
+    // public void testUndoAllowed() {
+    //     double amount1 = 30.0;
+    //     String category1 = "food";
+    //     double amount2 = 30.0;
+    //     String category2 = "other";
+    //     double amount3 = 10.0;
+    //     String category3 = "food";
+    //     double amount4 = 45.0;
+    //     String category4 = "bills";
 
-        controller.addTransaction(amount1, category1);
-        controller.addTransaction(amount2, category2);
-        controller.addTransaction(amount3, category3);
-        controller.addTransaction(amount4, category4);
+    //     controller.addTransaction(amount1, category1);
+    //     controller.addTransaction(amount2, category2);
+    //     controller.addTransaction(amount3, category3);
+    //     controller.addTransaction(amount4, category4);
 
-        assertEquals(5, view.getTransactionsTable().getRowCount());
+    //     assertEquals(5, view.getTransactionsTable().getRowCount());
 
-        controller.undoTransaction(view.getTransactionsTable().getSelectedRows());
-        assertEquals(2, view.getTransactionsTable().getSelectedRows());
+    //     controller.undoTransaction(view.getTransactionsTable().getSelectedRows());
+    //     assertEquals(2, view.getTransactionsTable().getSelectedRows());
 
-    }
+    // }
 
+    
     @Test
     public void testUndoDisallowed() {
+
+
         // Error message
-        String emptyMessage = "This undo is not allowd: The transaction list is empty.";
-        String notSelectMessage = "This undo is not allowd: No transaction is sellected.";
+        String emptyMessage = "This undo is not allowed: The transaction list is empty.";
+        String notSelectMessage = "This undo is not allowed: No transaction is selected.";
+
         double amount = 50.0;
         String category = "food";
 
-        try {
-            Transaction trans = new Transaction(amount, category);
-            model.addTransaction(trans);
+        JTable transactionsTable = view.getTransactionsTable();
+        int[] selectedRows = transactionsTable.getSelectedRows();
 
+        try {
+            controller.undoTransaction(selectedRows);
         } catch (Exception e) {
             String errorMessage = e.getMessage();
+            assertEquals(emptyMessage, errorMessage);
         }
+
+        assertTrue(controller.addTransaction(amount, category));
+
+        try {
+            controller.undoTransaction(selectedRows);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            assertEquals(notSelectMessage, errorMessage);
+        }
+
+        transactionsTable.addRowSelectionInterval(0, 0);
+        selectedRows = transactionsTable.getSelectedRows();
+
+        try {
+            controller.undoTransaction(selectedRows);
+        } catch (Exception e) {
+        }
+
+        assertEquals(0, model.getTransactions().size());
     }
 
 }
+

@@ -74,23 +74,25 @@ public class ExpenseTrackerController {
   }
 
   // Add undo button function
-  public void undoTransaction(int[] selectedRows) {
+  public void undoTransaction(int[] selectedRows) throws UndoException {
     List<Transaction> transactions = model.getTransactions();
     int rowCount = view.getTransactionsTable().getRowCount();
     if(rowCount < 2){
-      JOptionPane.showMessageDialog(view, "This undo is not allowd: The transaction list is empty.");
+      // JOptionPane.showMessageDialog(view, "This undo is not allowd: The transaction list is empty.");
+      throw new UndoException("This undo is not allowed: The transaction list is empty.");
     }
     
     else if (selectedRows.length > 0 && selectedRows.length <= transactions.size()) {
       for(int selectedRow : selectedRows){
-                  Transaction selectedTransaction = transactions.get(selectedRow);
-                  model.removeTransaction(selectedTransaction);
+        Transaction selectedTransaction = transactions.get(selectedRow);
+        model.removeTransaction(selectedTransaction);
       }
       view.refreshTable(model.getTransactions());
     
     }
     else{
-      JOptionPane.showMessageDialog(view, "This undo is not allowd: No transaction is sellected.");
+      throw new UndoException("This undo is not allowed: No transaction is selected.");
     }
   }
 }
+
