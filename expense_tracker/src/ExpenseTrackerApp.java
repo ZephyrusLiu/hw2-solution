@@ -72,10 +72,13 @@ public class ExpenseTrackerApp {
    // Add undo eventlistener
    
     view.getUndoButton().addActionListener(e -> {
+      // Get selected rows
       int[] selectedRows = view.getTransactionsTable().getSelectedRows();
       try{
+        // Pass seleceted rows to undoTransaction
         controller.undoTransaction(selectedRows);
       }catch(UndoException exception) {
+        // Catch any exception and show it on the UI
         JOptionPane.showMessageDialog(view,exception.getMessage());
         view.toFront();
       }
